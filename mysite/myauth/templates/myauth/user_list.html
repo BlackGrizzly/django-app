@@ -1,0 +1,21 @@
+{% extends 'myauth/base.html' %}
+
+{% block title %}
+    Список пользователей
+{% endblock %}
+
+{% block body %}
+    <h1>Пользователи:</h1>
+    {% if object_list  %}
+        <div>
+            <ul>
+        {% for user in object_list  %}
+            <li><a href="{% url 'myauth:profile_detail' pk=user.profile.pk %}">{{ user.username }}</a></li>
+        {% endfor %}
+            </ul>
+        </div>
+    {% else %}
+        <h3>Пользователей нет</h3>
+    {% endif %}
+    
+{% endblock %}

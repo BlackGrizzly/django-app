@@ -1,0 +1,30 @@
+{% extends 'shopapp/base.html' %}
+
+{% block title %}
+    Список заказов:
+{% endblock %}
+
+{% block body %}
+    <h1>Заказы:</h1>
+    {% if object_list %}
+        <div>
+        {% for order in object_list %}
+            <div>
+                <p><a href="{% url "shopapp:order_detail" pk=order.pk %}">Заказ #{{ order.pk }} от {{order.order_date|date:"d.m.Y"}}</a></p>
+                <p>Покупатель: <strong>{% firstof order.user.first_name order.user.username %} </strong></p>
+                <p>Промокод: <code>{{ order.promocode }}</code></p>
+                <p>Адрес доставки: {{ order.delivery_address }}</p>
+                <p>Комментарий: {% firstof order.comment 'Без комментария' %}</p>
+            </div>
+            <hr />
+        {% endfor %}
+        </div>
+    {% else %}
+        <h3>Пока заказов нет</h3>
+    {% endif %}
+
+    <div>
+        <a href="{% url "shopapp:order_create" %}">Форма создания заказа</a>
+    </div>
+
+{% endblock %}

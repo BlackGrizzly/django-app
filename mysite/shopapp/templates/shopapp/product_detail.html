@@ -1,0 +1,52 @@
+{% extends 'shopapp/base.html' %}
+
+{% load i18n %}
+
+{% block title %}
+    {% translate "Product detail" %} {{object.name}} 
+{% endblock %}
+
+{% block body %}
+    <h1>{% translate "Product" %} {{object.name}}</h1>
+
+    <div>
+        <p>{% translate "Price" %}: {{ object.price }}</p>
+        {% translate "no description" as no_description %}
+        <p>{% translate "Description" %}: {% firstof object.description no_description %}</p>
+        <p>{% translate "Weight" %}: {{ object.weight }}</p>
+        <p>{% translate "Active" context 'Is Product active' %}: <input type="checkbox" disabled {% if object.active is True %} checked {% endif %}></p>
+        {% if object.preview  %}
+        <p>{% translate "Product preview" %}: <img src={{ object.preview.url }} alt="{{ object.name }}"></p>
+        {% endif %}
+        <h3>{% translate "Product images" %}:</h3>
+        {% for img in object.images.all %}
+            <div>
+                <img src="{{ img.image.url }}" >
+                <div>{{ img.image.description }}</div>
+                <div>
+                {% blocktranslate count image_count=object.images|length %}
+                    The Product has one image
+                {% plural %}                    
+                    The Product has {{ image_count }} images
+                {% endblocktranslate %}
+                </div>
+            </div>
+        {% empty %}
+            {% blocktranslate %}
+            <div>No images yet</div>
+            {% endblocktranslate %}
+        {% endfor %}
+    </div>
+    <hr />
+
+    <div>
+        <a href="{% url "shopapp:product_list" %}">{% translate "Return to Product list" %}</a>
+        {% if perms.shopapp.change_product %}
+        <a href="{% url "shopapp:product_edit" pk=object.pk %}">{% translate "Edit Product" %}</a>
+        {% endif %}
+        {% if perms.shopapp.delete_product %}
+        <a href="{% url "shopapp:product_deactivate" pk=object.pk  %}">{% translate "Deactivate Product" %}</a>
+        {% endif %}
+    </div>
+
+{% endblock %}

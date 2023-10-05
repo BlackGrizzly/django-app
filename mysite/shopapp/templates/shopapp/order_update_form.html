@@ -1,0 +1,21 @@
+{% extends 'shopapp/base.html' %}
+
+{% block title %}
+    Редактирование заказа {{ object.pk}}
+{% endblock %}
+
+{% block body %}
+    <h1>Редактирование заказа #{{ object.pk }} от {{ object.order_date|date:"d.m.Y" }}</h1>
+
+    <form method="post" enctype='multipart/form-data'>
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Сохранить</button>
+    </form>
+    <hr />
+
+    <div>
+        <a href="{% url "shopapp:order_detail" pk=object.pk %}">Вернуться к свойствам заказа</a>
+    </div>
+
+{% endblock %}

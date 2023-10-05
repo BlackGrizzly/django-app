@@ -1,0 +1,36 @@
+{% extends 'blogapp/base.html' %}
+
+{% load i18n %}
+
+{% translate "Article list" %}
+
+{% block title %}
+    {% translate "Article list" %}
+{% endblock %}
+
+{% block body %}
+    <h1>{% translate "Article list" %}</h1>
+
+    {% if object_list  %}
+        <div>
+        {% for article in object_list  %}
+            <div>
+                <h3>{{ article.title }}</h3>
+                <p>{% translate "Publication date" %}: {{ article.pub_date|date:"d.m.Y"  }}</p>
+                <p>{% translate "Author" %}: <a href="#">{{ article.author.name }}</a></p>
+                <p>{% translate "Category" %}: <a href="#">{{ article.category.name }}</a></p>
+                <p>{% translate "Tags" %}: 
+                    {% for tag in article.tags.all %}
+                        <a href="#">{{ tag.name }}</a> 
+                    {% endfor %}
+                </p>
+
+            </div>
+            <hr />
+        {% endfor %}
+        </div>
+    {% else %}
+        <h3>{% translate "No Article yet" %}</h3>
+    {% endif %}
+
+{% endblock %}

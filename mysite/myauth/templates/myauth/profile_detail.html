@@ -1,0 +1,36 @@
+{% extends 'myauth/base.html' %}
+
+{% block title %}
+    Профиль пользователя
+{% endblock %}
+
+{% block body %}
+    {% if user.is_authenticated %}
+        <h1>Профиль пользователя {{ object.user.username }}</h1>
+        <div style="display:flex;">
+            <div style="width: 150px;padding:5px;margin:10px;border:1px solid black;">
+                {% if object.avatar %}    
+                    <img src="{{ object.avatar.url }}" width="150">
+                {% else %}
+                    <div>Нет аватара</div>
+                {% endif %}
+            </div>
+            <div>
+                <p>Логин: {{ object.user.username }}</p>
+                <p>Имя: {{ object.user.first_name }}</p>
+                <p>Фамилия: {{ object.user.last_name }}</p>
+                <p>Email: {{ object.user.email }}</p>
+                <p>Дата рождения: {{ object.birthday }}</p>
+                <p>Биография: {{ object.bio }}</p>
+                <p>Соглашение: {{ object.agreement_accepted }}</p>
+            </div>
+        </div>
+        {% if user.is_staff or user.pk == object.user.pk %}
+            <div>
+                <a href="{% url 'myauth:profile_edit' pk=object.pk %}">Редактировать</a>
+            </div>
+        {% endif %}
+    {% else %}
+        <h2>Пользователь не авторизован</h2>
+    {% endif%}
+{% endblock %}

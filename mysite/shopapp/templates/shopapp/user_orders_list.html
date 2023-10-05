@@ -1,0 +1,28 @@
+{% extends 'shopapp/base.html' %}
+{% load cache %}
+
+{% block title %}
+    Список заказов пользователя {{ owner.username }}:
+{% endblock %}
+
+{% block body %}
+    <h1>Пользователь {{ owner.username }} выполнил следующие заказы:</h1>
+    {% if object_list %}
+        {% cache 300 orders owner.pk %}
+            <div>
+            {% for order in object_list %}
+                <div>
+                    <p><a href="{% url "shopapp:order_detail" pk=order.pk %}">Заказ #{{ order.pk }} от {{order.order_date|date:"d.m.Y"}}</a></p>
+                    <p>Промокод: <code>{{ order.promocode }}</code></p>
+                    <p>Адрес доставки: {{ order.delivery_address }}</p>
+                    <p>Комментарий: {% firstof order.comment 'Без комментария' %}</p>
+                </div>
+                <hr />
+            {% endfor %}
+            </div>
+        {% endcache %}
+    {% else %}
+        <h3>У пользователя {{ owner.username }} ещё нет заказов</h3>
+    {% endif %}
+
+{% endblock %}

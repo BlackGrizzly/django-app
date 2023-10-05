@@ -1,0 +1,31 @@
+{% extends 'shopapp/base.html' %}
+
+{% block title %}
+    Свойства заказа {{object.pk}}
+{% endblock %}
+
+{% block body %}
+    <h1>Заказ #{{ object.pk }} от {{object.order_date|date:"d.m.Y"}}</h1>
+
+    <div>
+        <p>Промокод: <code>{{ object.promocode }}</code></p>
+        <p>Адрес доставки: {{ object.delivery_address }}</p>
+        <p>Комментарий: {% firstof object.comment 'Без комментария' %}</p>
+        <p>Покупатель: <strong>{% firstof object.user.first_name object.user.username %}</strong></p>
+        <div>Список товаров:
+            <ul>
+                {% for product in object.products.all %}
+                <li>{{ product.name }}, {{ product.price}}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <hr />
+
+    <div>
+        <a href="{% url "shopapp:order_list" %}">Вернуться в список заказов</a>
+        <a href="{% url "shopapp:order_edit" pk=object.pk %}">Редактирвоание заказа</a>
+        <a href="{% url "shopapp:order_delete" pk=object.pk  %}">Удалить заказ</a>
+    </div>
+
+{% endblock %}

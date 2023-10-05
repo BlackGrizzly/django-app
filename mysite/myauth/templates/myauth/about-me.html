@@ -1,0 +1,35 @@
+{% extends 'myauth/base.html' %}
+
+{% block title %}
+    Мой профиль 
+{% endblock %}
+
+{% block body %}
+    <h1>Мой профиль</h1>
+    {% if user.is_authenticated %}
+        <div style="display:flex;">
+        <div style="width: 150px;padding:5px;margin:10px;border:1px solid black;">
+            {% if object.avatar %}    
+                <img src="{{ object.avatar.url }}" width="150">
+            {% else %}
+                <div>Нет аватара</div>
+            {% endif %}
+        </div>
+        <div>
+            <p>Логин: {{ object.user.username }}</p>
+            <p>Имя: {{ object.user.first_name }}</p>
+            <p>Фамилия: {{ object.user.last_name }}</p>
+            <p>Email: {{ object.user.email }}</p>
+            <p>Дата рождения: {{ object.birthday }}</p>
+            <p>Биография: {{ object.bio }}</p>
+            <p>Соглашение: {{ object.agreement_accepted }}</p>
+        </div>
+        <form method="post" enctype='multipart/form-data'>
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Обновить аватар</button>
+        </form>
+    {% else %}
+        <h2>Пользователь не авторизован</h2>
+    {% endif%}
+{% endblock %}

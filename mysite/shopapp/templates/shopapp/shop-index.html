@@ -1,0 +1,35 @@
+{% extends 'shopapp/base.html' %}
+
+{% block title %}
+Shop Index
+{% endblock%}
+
+{% block body %}
+    <h1>Hello Shop Index!</h1>
+
+    <div>
+        <ul>
+            {% for name, description, price in products %}
+            <li>{{ name|capfirst }} ({{ name|length }}) for ${{ price|floatformat:"2" }}</li>
+            <div>{{ description|capfirst }}</div>
+            {% if name|length_is:'7' %}
+            <span class="red">Lucky product!</span>
+            {% endif %}
+            {% empty %}
+            No products here
+            {% endfor %}
+        </ul>
+    </div>
+    <hr>
+    <h2>Меню сайта: </h2>
+    <ul>
+        <li><a href="{% url 'shopapp:product_list' %}">Продукты</a></li>
+        {% if user.is_authenticated %}
+        <li><a href="{% url 'shopapp:order_list' %}">Заказы</a></li>
+        {% endif %}
+    </ul>
+    <hr>
+    <div>Time running: {{ time_running }}</div>
+
+    <div>{% lorem 3 p random %}</div>
+{% endblock%}

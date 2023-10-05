@@ -1,0 +1,20 @@
+{% extends 'shopapp/base.html' %}
+
+{% block title %}
+    Снятие товара {{ object.name }} с публикации
+{% endblock %}
+
+{% block body %}
+    <form method="post">
+        {% csrf_token %}
+        <p>Вы уверены, что хотите снять товар "{{ object.name }}" с публикации?</p>
+        {{ form }} 
+        <button type="submit">Снять с публикации</button>
+    </form>
+    <hr />
+
+    <div>
+        <a href="{% url "shopapp:product_detail" pk=object.pk %}">Вернуться в свойствам товара</a>
+    </div>
+
+{% endblock %}
